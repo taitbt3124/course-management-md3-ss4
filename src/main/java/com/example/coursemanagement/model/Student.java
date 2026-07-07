@@ -5,13 +5,13 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "instructors")
+@Table(name = "students")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "courses")
-public class Instructor {
+@ToString(exclude = "enrollments")
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,6 @@ public class Instructor {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
-    private List<Course> courses;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentEnrollment> enrollments;
 }

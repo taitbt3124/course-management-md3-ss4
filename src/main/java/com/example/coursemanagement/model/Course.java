@@ -2,6 +2,7 @@ package com.example.coursemanagement.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @Entity
 @Table(name = "courses")
@@ -9,20 +10,24 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "enrollments")
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private CourseStatus status;
 
-    @Column(name = "instructor_id", nullable = false)
-    private Long instructorId;
+    @ManyToOne
+    @JoinColumn(name = "instructor_id", nullable = false)
+    private Instructor instructor;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentEnrollment> enrollments;
 }
